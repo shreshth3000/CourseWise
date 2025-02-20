@@ -16,7 +16,7 @@ This project implements a **real-time course recommendation system** that sugges
 - **Machine Learning & Vector Search**  
 
 ## Usage  
-- Provide user details (education background, goals).  
+- Provide user details (education backgroundal, goals).  
 - And that's it! Get personalized course recommendations in real time.  
 
 ## License  
