@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CourseWise - Course Recommendation</title>
+    <style>
+    
+        @font-face {
+            font-family: merriweather_bold;
+            src: url(Merriweather-Bold.ttf);
+        }
+        @font-face {
+            font-family: merriweather_regular;
+            src: url(Merriweather-Regular.ttf);
+        }
+        body {
+            font-family: merriweather_bold;     
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(180deg, #251536, #000000); /* Gradient Background */
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1); /* Glassmorphism Effect */
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            font:merriweather_regular;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            
+            font:merriweather_regular;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-size: 2.5em;
+        }
+
+        form {
+            padding: 25px;
+            border-radius: 10px;
+            
+            font:merriweather_regular;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font:merriweather_regular;
+            color: #ffffff;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        input[type='text'],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            font:  merriweather_regular;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background: rgb(255, 255, 255);
+            color: #090707;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        input[type='text']:focus,
+        textarea:focus {
+            border-bottom: 3px solid #5868fb;
+            font:merriweather_regular;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+            font:merriweather_regular;
+        }
+
+        button {
+            background-color: #a78cd6;
+            color: white;
+            padding: 14px 20px;
+            font:merriweather_regular;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button:hover {
+            background-color: #886ab5;
+        }
+
+        #recommendation {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container, h1, form, #recommendation {
+            animation: fadeIn 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CourseWise - Get Your Personalized Recommendations</h1>
+        <form id="userForm">
+            <label for="interests">Interests:</label>
+            <input type="text" id="interests" name="interests" placeholder="e.g., Machine Learning, AI, Data Science">
+
+            <label for="skills">Skills:</label>
+            <input type="text" id="skills" name="skills" placeholder="e.g., Python, Statistics, Deep Learning">
+
+            <label for="goals">Goals:</label>
+            <textarea id="goals" name="goals" placeholder="e.g., Career change, Upskilling"></textarea>
+
+            <label for="education">Education:</label>
+            <input type="text" id="education" name="education" placeholder="e.g., Bachelor's Degree, Master's Degree">
+
+            <button type="button" onclick="getRecommendation()">Get Recommendation</button>
+        </form>
+
+        <div id="recommendation">
+            <h2>Recommendation:</h2>
+            <p id="recommendationText">Your personalized course recommendation will appear here.</p>
+        </div>
+    </div>
+
+    <script>
+        function getRecommendation() {
+            
+            const userData = {
+                interests: document.getElementById('interests').value,
+                skills: document.getElementById('skills').value,
+                goals: document.getElementById('goals').value,
+                education: document.getElementById('education').value
+            };
+
+            
+            fetch('/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                
+                document.getElementById('recommendationText').innerText = data.recommendation;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('recommendationText').innerText = 'Failed to fetch recommendation. Please check the console for errors.';
+            });
+        }
+    </script>
+</body>
+</html>
